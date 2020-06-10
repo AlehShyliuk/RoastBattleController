@@ -7,32 +7,15 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
-    private MediaPlayer mp1;
-    private MediaPlayer mp2;
-    private MediaPlayer mp3;
-    private MediaPlayer mp4;
-    private MediaPlayer mp5;
-    private MediaPlayer mp6;
-
-    void create1(){ mp1 = MediaPlayer.create(this, R.raw.cock); }
-    void create2(){ mp2 = MediaPlayer.create(this, R.raw.gong); }
-    void create3(){ mp3 = MediaPlayer.create(this, R.raw.grenade); }
-    void create4(){ mp4 = MediaPlayer.create(this, R.raw.gun); }
-    void create5(){ mp5 = MediaPlayer.create(this, R.raw.haha); }
-    void create6(){ mp6 = MediaPlayer.create(this, R.raw.horn); }
-
-    void createAll(){
-        create1();
-        create2();
-        create3();
-        create4();
-        create5();
-        create6();
-    }
+    private final List<ImageButton> playButtons = new ArrayList<>();
+    private final List<MediaPlayer> players = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -42,115 +25,46 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        createAll();
+        initializePlayers();
+        initializeButtons();
 
-        final Button one = this.findViewById(R.id.button1);
-        final Button two = this.findViewById(R.id.button2);
-        final Button three = this.findViewById(R.id.button3);
-        final Button four = this.findViewById(R.id.button4);
-        final Button five = this.findViewById(R.id.button5);
-        final Button six = this.findViewById(R.id.button6);
+        for (final ImageButton btn: playButtons){
+            btn.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int ind = playButtons.indexOf(btn);
 
-        one.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    one.setBackgroundColor(0xFF4CAF50);
-                else if (event.getAction() == MotionEvent.ACTION_UP){
-                    one.setBackgroundColor(0xFFCC0000);
-                    if (mp1.isPlaying()){
-                        mp1.stop();
-                        create1();
+                    if (event.getAction() == MotionEvent.ACTION_DOWN)
+                        btn.setBackgroundResource(R.drawable.but_green);
+                    else if (event.getAction() == MotionEvent.ACTION_UP){
+                        btn.setBackgroundResource(ind % 2 == 0 ? R.drawable.but_blue : R.drawable.but_red);
+                        if (players.get(ind).isPlaying()){
+                            players.get(ind).pause();
+                        }
+                        players.get(ind).seekTo(0);
+                        players.get(ind).start();
                     }
-                    mp1.start();
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
+    }
 
-        two.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    two.setBackgroundColor(0xFF4CAF50);
-                else if (event.getAction() == MotionEvent.ACTION_UP){
-                    two.setBackgroundColor(0xFFCC0000);
-                    if (mp2.isPlaying()){
-                        mp2.stop();
-                        create2();
-                    }
-                    mp2.start();
-                }
-                return false;
-            }
-        });
+    private void initializeButtons() {
+        playButtons.add((ImageButton) this.findViewById(R.id.button1));
+        playButtons.add((ImageButton) this.findViewById(R.id.button2));
+        playButtons.add((ImageButton) this.findViewById(R.id.button3));
+        playButtons.add((ImageButton) this.findViewById(R.id.button4));
+        playButtons.add((ImageButton) this.findViewById(R.id.button5));
+        playButtons.add((ImageButton) this.findViewById(R.id.button6));
+    }
 
-        three.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    three.setBackgroundColor(0xFF4CAF50);
-                else if (event.getAction() == MotionEvent.ACTION_UP){
-                    three.setBackgroundColor(0xFFCC0000);
-                    if (mp3.isPlaying()){
-                        mp3.stop();
-                        create3();
-                    }
-                    mp3.start();
-                }
-                return false;
-            }
-        });
-
-        four.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    four.setBackgroundColor(0xFF4CAF50);
-                else if (event.getAction() == MotionEvent.ACTION_UP){
-                    four.setBackgroundColor(0xFFCC0000);
-                    if (mp4.isPlaying()){
-                        mp4.stop();
-                        create4();
-                    }
-                    mp4.start();
-                }
-                return false;
-            }
-        });
-
-        five.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    five.setBackgroundColor(0xFF4CAF50);
-                else if (event.getAction() == MotionEvent.ACTION_UP){
-                    five.setBackgroundColor(0xFFCC0000);
-                    if (mp5.isPlaying()){
-                        mp5.stop();
-                        create5();
-                    }
-                    mp5.start();
-                }
-                return false;
-            }
-        });
-
-        six.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    six.setBackgroundColor(0xFF4CAF50);
-                else if (event.getAction() == MotionEvent.ACTION_UP){
-                    six.setBackgroundColor(0xFFCC0000);
-                    if (mp6.isPlaying()){
-                        mp6.stop();
-                        create6();
-                    }
-                    mp6.start();
-                }
-                return false;
-            }
-        });
+    private void initializePlayers() {
+        players.add(MediaPlayer.create(this, R.raw.cock));
+        players.add(MediaPlayer.create(this, R.raw.gong));
+        players.add(MediaPlayer.create(this, R.raw.grenade));
+        players.add(MediaPlayer.create(this, R.raw.gun));
+        players.add(MediaPlayer.create(this, R.raw.haha));
+        players.add(MediaPlayer.create(this, R.raw.horn));
     }
 }
