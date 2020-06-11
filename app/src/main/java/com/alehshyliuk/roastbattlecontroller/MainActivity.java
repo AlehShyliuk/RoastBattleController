@@ -1,4 +1,4 @@
-package com.alehshyliuk.lehacontroller;
+package com.alehshyliuk.roastbattlecontroller;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
