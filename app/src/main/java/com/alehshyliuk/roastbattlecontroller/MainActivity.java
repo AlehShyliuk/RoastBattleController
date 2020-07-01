@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 button.setBackgroundResource(backgroundActiveId);
-            } else {
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 button.setBackgroundResource(backgroundInactiveId);
                 if (player.isPlaying()) {
                     player.pause();
